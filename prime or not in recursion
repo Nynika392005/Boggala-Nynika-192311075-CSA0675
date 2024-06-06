@@ -1,0 +1,10 @@
+def check_divisor(n, i):
+    if i > (n // 2) + 1:
+        return True
+    if n % i == 0:
+        print("not")
+        return False
+    return check_divisor(n, i + 1)
+n = 6
+if check_divisor(n, 2):
+    print("prime")
