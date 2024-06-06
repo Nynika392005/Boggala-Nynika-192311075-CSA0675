@@ -1,0 +1,9 @@
+def is_armstrong(n):
+    if n < 10:
+        return True
+    else:
+        digits = [int(digit) for digit in str(n)]
+        sum_cubes = sum([digit ** len(str(n)) for digit in digits])
+        return sum_cubes == n
+print(is_armstrong(371))  
+print(is_armstrong(123)) 
