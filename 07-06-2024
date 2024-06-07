@@ -22,7 +22,7 @@ else:
   print("not")
 
 
-13.
+13.TIME COMPLIXITY
 #include <stdio.h>
 #include<time.h>
 void constantTimeComplexity() {
@@ -57,7 +57,7 @@ printf("Time Complexity Analysis:\n");
     return 0;
 }
 
-4.A.non-recursive(linear search):
+14.A.non-recursive(linear search):
 #include <stdio.h>
 int linearSearch(int arr[], int n, int target) {
     int i;
