@@ -83,6 +83,43 @@ quickSort(data, 0, size - 1)
 print('Sorted Array in Ascending Order:')
 print(data)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4.BINARY SEARCH
+algorithm:
+Initialize the low and high pointers to the start and end of the array, respectively.
+Initialize the mid pointer to the middle of the array.
+Repeat until Convergence:
+Calculate the mid index using the formula mid = low + (high - low) // 2.
+Compare the value at the mid index with the target value x.
+If the value at mid is equal to x, return the mid index.
+If the value at mid is less than x, update the low pointer to mid + 1.
+If the value at mid is greater than x, update the high pointer to mid - 1.
+Return Result:
+If the low pointer exceeds the high pointer, the target value x is not found in the array.
+Return -1 to indicate that the target value is not present in the array.
+Main Function:
+Call the binarySearch function with the array, target value, and the initial low and high pointers.
+Check if the result is not -1, indicating that the target value is found.
+If the result is not -1, print the index at which the target value is found.
+If the result is -1, print that the target value is not found.
+CODE:
+def binarySearch(array, x, low, high):
+    while low <= high:
+        mid = low + (high - low)//2
+        if array[mid] == x:
+            return mid
+        elif array[mid] < x:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+array = [3, 4, 5, 6, 7, 8, 9]
+x = 4
+result= binarySearch(array, x, 0, len(array)-1)
+if result != -1:
+    print("Element is present at index " + str(result))
+else:
+    print("Not found")
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 5.STRASSENS MATRIX MULTIPLICATION
 ALGORITHM:
 Split: Split the input matrices into four submatrices each.
