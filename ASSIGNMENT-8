@@ -189,3 +189,98 @@ def min_subarrays(nums):
 nums = [2, 6, 3, 4, 3]
 print(min_subarrays(nums)) 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+8.NUMBER OF DISTINCT AVERAGES
+ALGORITHM:
+Initialization:
+Check if the input list nums is empty. If it is, return 0.
+Initialize an empty set averages to store the distinct averages.
+Initialize two pointers, i and j, to the start and end of the list, respectively.
+Main Loop:
+While i is less than j:
+Calculate the average of the numbers at indices i and j.
+Add this average to the averages set.
+Move i one step to the right and j one step to the left.
+Return:
+Return the size of the averages set, which represents the number of distinct averages.
+CODE:
+def distinctAverages(nums):
+    if not nums:
+        return 0
+    nums.sort()
+    averages = set()
+    i, j = 0, len(nums) - 1
+    while i < j:
+        averages.add((nums[i] + nums[j]) / 2)
+        i += 1
+        j -= 1
+    return len(averages)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+9.COUNT WAYS TO BUILD GOOD STRING
+ALGORITHM:
+Initialization:
+Initialize a list dp of size high + 1 with all elements set to 0.
+Set dp to 1, as there is one way to construct an empty string.
+Dynamic Programming:
+For each string length i from 1 to high:
+If i is greater than or equal to low, calculate the number of ways to construct a good string of length i by considering two options:
+Append '0' zero times: dp[i - 1] * (zero + 1).
+Append '1' one time: dp[i - 1] * one.
+Add these two options and take the result modulo 10**9 + 7.
+If i is less than low, only consider the option to append '0' zero times: dp[i - 1] * (zero + 1).
+Store the result in dp[i].
+Return:
+Calculate the sum of the elements in dp from low to high (inclusive) and return the result modulo 10**9 + 7.
+CODE:
+def countGoodStrings(low, high, zero, one):
+    MOD = 10**9 + 7
+    dp = [0] * (high + 1)
+    dp[0] = 1
+    for i in range(1, high + 1):
+        if i >= low:
+            dp[i] = (dp[i - 1] * (zero + 1) + dp[i - 1] * one) % MOD
+        else:
+            dp[i] = (dp[i - 1] * (zero + 1)) % MOD
+    return sum(dp[low:high + 1]) % MOD
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+10.MOST PROFITABLE PATH IN TREE
+ALGORITHM:
+Initialize the Graph and Profit Array:
+Create an adjacency list representation of the tree.
+Initialize the profitAtNode array with the given amount values.
+Assign Timestamps to Nodes:
+Perform a depth-first search (DFS) from the node bob to assign timestamps to each node based on their distance from bob.
+The timestamp for each node is the minimum timestamp of its children.
+Calculate Profit for Each Node:
+Perform a DFS from the root node (0) to calculate the maximum profit for Alice.
+For each node, calculate the profit by adding the profit at the current node to the maximum profit of its children.
+Update the maximum profit if the current profit is higher.
+Return the Maximum Profit:
+Return the maximum profit calculated in step 3.
+CODE:
+class Solution:
+    def mostProfitablePath(self, edges, bob, amount):
+        n = len(edges) + 1
+        graph = [[] for _ in range(n)]
+        profitAtNode = amount
+        timeStamps = [n] * n
+        maximumProfit = float('-inf')
+        for edge in edges:
+            graph[edge[0]].append(edge[1])
+            graph[edge[1]].append(edge[0])
+        def dfsAssignTimestamps(currentNode, parent, timestamp):
+            if currentNode == 0:
+                timeStamps[currentNode] = min(timeStamps[currentNode], timestamp)
+                return True
+            for nextNode in graph[currentNode]:
+                if nextNode != parent and dfsAssignTimestamps(nextNode, currentNode, timestamp + 1):
+                    return True
+            return False
+        def dfsCalculateProfit(currentNode, parent, timestamp, currentProfit):
+            nonlocal maximumProfit
+            if currentNode == 0:
+                maximumProfit = max(maximumProfit, currentProfit)
+                return
+            for nextNode in graph[currentNode]:
+                if nextNode != parent:
+                    dfsCalculateProfit(nextNode, currentNode, timestamp + 1, currentProfit + profitAt
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
