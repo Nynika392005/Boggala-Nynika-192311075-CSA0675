@@ -1,0 +1,173 @@
+1.word break problem
+algorithm:
+Initialization:
+Create a boolean array dp of size n + 1, where n is the length of the input string s. Initialize dp to True because an empty string can always be segmented.
+Initialize n to the length of s.
+Dynamic Programming Loop:
+Iterate through the string s from left to right. For each index i:
+Iterate through the prefixes of s[:i] from left to right. For each prefix s[j:i]:
+Check if s[j:i] is in the wordDict.
+If s[j:i] is in wordDict and dp[j] is True, set dp[i] to True and break out of the inner loop.
+Return:
+Return dp[n], which represents whether the entire string s can be segmented into words from wordDict
+code:
+def wordBreak(s, wordDict):
+    n = len(s)
+    dp = [False] * (n + 1)
+    dp[0] = True
+    for i in range(1, n + 1):
+        for j in range(i):
+            if dp[j] and s[j:i] in wordDict:
+                dp[i] = True
+                break
+    return dp[n]
+    ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    2.Word trap problem
+    algorithm:
+Create a boolean array dp of size n + 1, where n is the length of the input string s. Initialize dp to True because an empty string can always be segmented.
+Initialize n to the length of s.
+Dynamic Programming Loop:
+Iterate through the string s from left to right. For each index i:
+Iterate through the prefixes of s[:i] from left to right. For each prefix s[j:i]:
+Check if s[j:i] is in the wordDict.
+If s[j:i] is in wordDict and dp[j] is True, set dp[i] to True and break out of the inner loop.
+Return:
+Return dp[n], which represents whether the entire string s can be segmented into words from wordDict
+code:
+function wordBreak(s, wordDict):
+    n = length(s)
+    dp = [False] * (n + 1)
+    dp[0] = True
+
+    for i from 1 to n:
+        for j from 0 to i - 1:
+            if dp[j] and s[j:i] in wordDict:
+                dp[i] = True
+                break
+
+    return dp[n]
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    3.OBST
+    algorithm:
+Create an empty OBST.
+Initialize the root node of the OBST.
+Insert a new node into the OBST.
+If the OBST is empty, set the root node to the new node.
+If the OBST is not empty, recursively traverse the OBST to find the appropriate position for the new node.
+Start at the root node of the OBST.
+Compare the target value with the value of the current node.
+If the target value is less than the current node's value, move to the left child.
+If the target value is greater than the current node's value, move to the right child.
+If the target value matches the current node's value, return the node.
+Find the node to be deleted in the OBST.
+If the node has no children, simply remove it.
+If the node has one child, replace it with its child.
+If the node has two children, find the node's in-order successor (the smallest node in the right subtree),
+replace the node with its in-order successor, and then remove the in-order successor.
+code:
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+class OBST:
+    def __init__(self):
+        self.root = None
+    def insert(self, value):
+        if self.root is None:
+            self.root = Node(value)
+        else:
+            self._insert(self.root, value)
+    def _insert(self, node, value):
+        if value < node.value:
+            if node.left is None:
+                node.left = Node(value)
+            else:
+                self._insert(node.left, value)
+        elif value > node.value:
+            if node.right is None:
+                node.right = Node(value)
+            else:
+                self._insert(node.right, value)
+    def search(self, value):
+        return self._search(self.root, value)
+    def _search(self, node, value):
+        if node is None:
+            return None
+        if value == node.value:
+            return node
+        elif value < node.value:
+            return self._search(node.left, value)
+        else:
+            return self._search(node.right, value)
+    def delete(self, value):
+        self.root = self._delete(self.root, value)
+    def _delete(self, node, value):
+        if node is None:
+            return None
+        if value < node.value:
+            node.left = self._delete(node.left, value)
+        elif value > node.value:
+            node.right = self._delete(node.right, value)
+        else:
+            if node.left is None:
+                return node.right
+            elif node.right is None:
+                return node.left
+            else:
+                min_node = self._find_min(node.right)
+                node.value = min_node.value
+                node.right = self._delete(node.right, min_node.value)
+        return node
+    def _find_min(self, node):
+        while node.left is not None:
+            node = node.left
+        return node
+obst = OBST()
+obst.insert(5)
+obst.insert(3)
+obst.insert(7)
+obst.insert(2)
+obst.insert(4)
+obst.insert(6)
+obst.insert(8)
+print(obst.search(3).value)  
+print(obst.search(9))  
+obst.delete(4)
+print(obst.search(4)) 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4.flyod algorithm
+algorithm:
+Create a 2D adjacency matrix dist to represent the graph, where dist[i][j] represents the weight of the edge from node i to node j. If there is no edge, set dist[i][j] to a large value (e.g., infinity).
+Initialize the dist matrix with the given edge weights.
+Dynamic Programming:
+Iterate through all the nodes k as the intermediate node.
+For each pair of nodes i and j, update the distance dist[i][j] if the path through the intermediate node k is shorter than the current path.
+Output:
+The dist matrix now contains the shortest paths between all pairs of nodes.
+code:
+def floyd_warshall(n, dist):
+    """
+    Implements the Floyd-Warshall algorithm to find the shortest paths between all pairs of nodes.
+    Args:
+    n (int): The number of nodes in the graph.
+    dist (list of lists): The adjacency matrix representing the graph.
+    Returns:
+    list of lists: The updated adjacency matrix containing the shortest paths between all pairs of nodes.
+    """
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][j] > dist[i][k] + dist[k][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+    return dist
+n = 4
+dist = [
+    [0, 5, float('inf'), 10],
+    [float('inf'), 0, 3, float('inf')],
+    [float('inf'), float('inf'), 0, 1],
+    [float('inf'), float('inf'), float('inf'), 0]
+]
+result = floyd_warshall(n, dist)
+print(result)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
