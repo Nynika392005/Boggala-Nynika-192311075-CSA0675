@@ -155,4 +155,142 @@ def fourSum(nums: List[int], target: int) -> List[List[int]]:
 nums = [1, 0, -1, 0, -2, 2]
 target = 0
 print(fourSum(nums, target))  # Output: [1, 0, -1, 0] or any other valid quadruplet summing to 0
-----------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+6.
+algorithm:
+Initialize a counter count to zero and a candidate element candidate to None.
+Traversal: Iterate through the input array nums. For each element num:
+If count is zero, set candidate to num and increment count to one.
+If candidate is equal to num, increment count by one.
+If candidate is not equal to num, decrement count by one.
+Return: Return the candidate element, which is the majority element.
+This algorithm is known as the Boyer-Moore Majority Vote algorithm. 
+It works by essentially keeping a running tally of the majority element as it iterates through the array. 
+If the tally ever reaches zero, it resets the candidate to the current element.
+This ensures that the candidate is the majority element at the end of the iteration.
+code:
+def majorityElement(nums):
+    count = 0
+    candidate = None
+    for num in nums:
+        if count == 0:
+            candidate = num
+            count = 1
+        elif candidate == num:
+            count += 1
+        else:
+            count -= 1
+    return candidate
+nums = [3, 2, 3]
+print(majorityElement(nums))
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+7.
+algorithm:
+f the linked list is empty or has only one node, return the head as is.
+Find the Middle: Use the "slow" and "fast" pointer technique to find the middle of the linked list. 
+The "slow" pointer moves one step at a time, while the "fast" pointer moves two steps at a time. When the "fast" pointer reaches the end, the "slow" pointer will be at the middle.
+Split the List: Split the linked list into two halves by setting the next pointer of the middle node to None.
+Recursive Sort: Recursively sort the left and right halves of the linked list using the sortList function.
+Merge the Sorted Halves: Merge the two sorted halves using the merge function. This function takes two sorted linked lists and merges them into a single sorted linked list.
+The time complexity of this solution is O(n log n), where n is the number of nodes in the linked list.
+This is because the algorithm uses a divide-and-conquer approach, which involves recursively sorting the left and right halves of the list, 
+and then merging the sorted halves. The space complexity is O(log n) due to the recursive calls on the call stack
+code:
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+def sortList(head):
+    if not head or not head.next:
+        return head
+    slow, fast = head, head.next
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    middle = slow.next
+    slow.next = None
+    left = sortList(head)
+    right = sortList(middle)
+    return merge(left, right)
+def merge(left, right):
+    dummy = ListNode()
+    curr = dummy
+    while left and right:
+        if left.val < right.val:
+            curr.next = left
+            left = left.next
+        else:
+            curr.next = right
+            right = right.next
+        curr = curr.next
+    if left:
+        curr.next = left
+    if right:
+        curr.next = right
+    return dummy.next
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+8
+algorithm:
+Create a defaultdict named anagrams to store the anagrams. The default value for each key is an empty list.
+Traversal: Iterate through each string word in the input array strs.
+Sorting the Word: Sort the characters in the word to create a sorted version of the word. This ensures that all anagrams of the same word will have the same sorted version.
+Grouping Anagrams: Use the sorted version of the word as a key in the anagrams dictionary. Append the original word to the list of values for this key.
+Return: Return the values of the anagrams dictionary as a list. Each value is a list of anagrams.
+This algorithm ensures that all anagrams are grouped together by sorting the characters in each word and using the sorted version as a key in the dictionary. 
+The time complexity is O(nm log m), where n is the number of strings and m is the maximum length of a string. The space complexity is O(nm), as we need to store the sorted versions of all strings.
+code:
+from collections import defaultdict
+def groupAnagrams(strs):
+    anagrams = defaultdict(list)
+    for word in strs:
+        sorted_word = "".join(sorted(word))
+        anagrams[sorted_word].append(word)
+    return list(anagrams.values())
+strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+print(groupAnagrams(strs)) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+9.
+algorithm:
+Initialize a variable count to keep track of the number of good triplets.
+Nested Loops: Use three nested loops to iterate through all possible triplets (i, j, k) where i < j < k.
+Checking Conditions: For each triplet (i, j, k), check if the following conditions are met:
+The indices of the elements in nums1 are in increasing order: nums1.index(nums1[i]) < nums1.index(nums1[j]) < nums1.index(nums1[k]).
+The indices of the elements in nums2 are in increasing order: nums2.index(nums2[i]) < nums2.index(nums2[j]) < nums2.index(nums2[k]).
+Incrementing Count: If both conditions are met, increment the count variable.
+Return: Return the final value of count, which represents the total number of good triplets.
+The time complexity of this solution is O(n^3), where n is the length of the input arrays nums1 and nums2.
+This is because we use three nested loops to iterate through all possible triplets. The space complexity is O(1), as we only use a constant amount of extra space.
+code:
+def countGoodTriplets(nums1, nums2):
+    n = len(nums1)
+    count = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            for k in range(j + 1, n):
+                if (nums1.index(nums1[i]) < nums1.index(nums1[j]) < nums1.index(nums1[k]) and
+                    nums2.index(nums2[i]) < nums2.index(nums2[j]) < nums2.index(nums2[k])):
+                    count += 1
+    return count
+nums1 = [2, 0, 1, 3]
+nums2 = [0, 1, 2, 3]
+print(countGoodTriplets(nums1, nums2))
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+10
+algorithm:
+Initialize an empty list result to store the k largest elements.
+Heapify: Use the heapq.nlargest() function to create a min-heap from the input array nums. This function returns the k largest elements from the array.
+Return: Return the last element of the result list, which is the kth largest element in the array.
+The time complexity of this solution is O(n log k), where n is the length of the input array nums and k is the value of the parameter. 
+This is because the heapq.nlargest() function uses a heap data structure to find the k largest elements, which has a time complexity of O(n log k). 
+The space complexity is O(k), as we need to store the k largest elements in the result list.
+code:
+import heapq
+def findKthLargest(nums, k):
+    return heapq.nlargest(k, nums)[-1]
+nums = [3, 2, 1, 5, 6, 4]
+k = 2
+print(findKthLargest(nums, k)) 
+nums = [3, 2, 3, 1, 2, 4, 5, 5, 6]
+k = 4
+print(findKthLargest(nums, k))
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
