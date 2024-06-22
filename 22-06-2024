@@ -1,0 +1,147 @@
+1.computing binomial coefficient
+algorithm:
+Define the input parameters n and k, where n is the total number of items and k is the number of items to choose.
+Initialize the result result to 1.
+Dynamic Programming:
+Iterate through the range from k to 1.
+For each iteration, update result by multiplying it with (n - k + 1) / k.
+Return result as the final binomial coefficient.
+code:
+def binomial_coefficient(n, k):
+    """
+    Computes the binomial coefficient.
+    Args:
+    n (int): The total number of items.
+    k (int): The number of items to choose.
+    Returns:
+    int: The binomial coefficient.
+    """
+    if k > n - k:
+        k = n - k
+    result = 1
+    for i in range(k):
+        result = result * (n - i) // (i + 1)
+    return result
+n = 5
+k = 3
+binomial_coefficient_value = binomial_coefficient(n, k)
+print(f"The binomial coefficient for {n} choose {k} is: {binomial_coefficient_value}")
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2.Bellman ford
+algorithm:
+Define the input parameters graph and source, where graph is the weighted graph represented as an adjacency list and source is the source vertex.
+Initialize the distance array dist with infinite values for all vertices except the source vertex, which is set to 0.
+Relaxation:
+Iterate through all edges in the graph.
+For each edge (u, v) with weight w, update the distance dist[v] if dist[u] + w is less than dist[v].
+Detection of Negative Cycles:
+Iterate through all edges in the graph again.
+If there is an edge (u, v) with weight w such that dist[u] + w is less than dist[v], then there is a negative cycle in the graph.
+code:
+def bellman_ford(graph, source):
+    """
+    Finds the shortest path from the source vertex to all other vertices in a weighted graph.
+    Args:
+    graph (list of lists): The weighted graph represented as an adjacency list.
+    source (int): The source vertex
+    Returns:
+    list: The shortest distances from the source vertex to all other vertices.
+    """
+    n = len(graph)
+    dist = [float('inf')] * n
+    dist[source] = 0
+        for u in range(n):
+            for v in range(n):
+                if graph[u][v] != 0:
+                    if dist[u] + graph[u][v] < dist[v]:
+                        dist[v] = dist[u] + graph[u][v]
+
+    for u in range(n):
+        for v in range(n):
+            if graph[u][v] != 0:
+                if dist[u] + graph[u][v] < dist[v]:
+                    return "Graph contains a negative cycle"
+    return dist
+graph = [[0, 3, 0, 0],
+         [0, 0, 2, 0],
+         [0, 0, 0, 1],
+         [0, 0, 0, 0]]
+source = 0
+distances = bellman_ford(graph, source)
+print(f"The shortest distances from vertex {source} are: {distances}")
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3.Warshal floyd
+algorithm:
+Create a 2D adjacency matrix dist to represent the graph, where dist[i][j] represents the weight of the edge from node i to node j. 
+If there is no edge, set dist[i][j] to a large value (e.g., infinity).
+Initialize the dist matrix with the given edge weights.
+Dynamic Programming:
+Iterate through all the nodes k as the intermediate node.
+For each pair of nodes i and j, update the distance dist[i][j] if the path through the intermediate node k is shorter than the current path.
+Output:
+The dist matrix now contains the shortest paths between all pairs of nodes.
+code:
+def floyd_warshall(n, dist):
+    """
+    Implements the Floyd-Warshall algorithm to find the shortest paths between all pairs of nodes.
+    Args:
+    n (int): The number of nodes in the graph.
+    dist (list of lists): The adjacency matrix representing the graph.
+    Returns:
+    list of lists: The updated adjacency matrix containing the shortest paths between all pairs of nodes.
+    """
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][j] > dist[i][k] + dist[k][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+    return dist
+n = 4
+dist = [
+    [0, 5, float('inf'), 10],
+    [float('inf'), 0, 3, float('inf')],
+    [float('inf'), float('inf'), 0, 1],
+    [float('inf'), float('inf'), float('inf'), 0]
+]
+result = floyd_warshall(n, dist)
+print(result)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4.Meet in the middle technique
+algorithm:
+Initialization: We define the input strings X and Y and their lengths m and n, respectively. 
+We also create a 2D array dp to store the lengths of the longest common subsequences.
+Dynamic Programming: We fill the dp array in a bottom-up manner. 
+For each cell dp[i][j], we check if the current characters in X and Y match. 
+If they do, we increment the length of the LCS by 1. If they don't, we take the maximum length from the top or left cell.
+Finding the LCS: We trace back from the bottom-right corner of the dp array to find the LCS. 
+We compare the current characters in X and Y and move diagonally up if they match. If they don't match, we move up or left depending on which cell has a larger value.
+Output: We reverse the LCS to get the correct order and return it as a string.
+code:
+def meet_in_the_middle(X, Y):
+    m = len(X)
+    n = len(Y)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if X[i - 1] == Y[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+    lcs = []
+    i, j = m, n
+    while i > 0 and j > 0:
+        if X[i - 1] == Y[j - 1]:
+            lcs.append(X[i - 1])
+            i -= 1
+            j -= 1
+        elif dp[i - 1][j] > dp[i][j - 1]:
+            i -= 1
+        else:
+            j -= 1
+    lcs.reverse()
+    return ''.join(lcs)
+X = "ABCBDAB"
+Y = "BDCABA"
+lcs = meet_in_the_middle(X, Y)
+print(f"The longest common subsequence is: {lcs}")
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
