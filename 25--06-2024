@@ -1,3 +1,146 @@
+31.
+Alogorithm:
+-Initialize a distance matrix dist of the same size as mat and initialize all entries to INT_MAX.
+-Create a queue to store cell indices (i, j) where mat[i][j] == 1.
+-For each cell (i, j) in mat:
+-If mat[i][j] == 0, set dist[i][j] = 0 and enqueue (i, j) into the queue.
+-While the queue is not empty:
+-Dequeue a cell (i, j) from the queue.
+-For each adjacent cell (x, y) (up, down, left, right):
+-If (x, y) is within bounds and dist[x][y] > dist[i][j] + 1, update dist[x][y] = dist[i][j] + 1 and enqueue (x, y) into the queue.
+-The resulting dist matrix contains the distance of the nearest 0 for each cell.
+code:
+def nearestZero(mat):
+    m, n = len(mat), len(mat[0])
+    MAX = float('inf')
+    dist = [[MAX] * n for _ in range(m)]
+    queue = []
+    for i in range(m):
+        for j in range(n):
+            if mat[i][j] == 0:
+                dist[i][j] = 0
+                queue.append((i, j))
+    directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    while queue:
+        i, j = queue.pop(0)
+        for dx, dy in directions:
+            x, y = i + dx, j + dy
+            if 0 <= x < m and 0 <= y < n and dist[x][y] > dist[i][j] + 1:
+                dist[x][y] = dist[i][j] + 1
+                queue.append((x, y))
+    return dist
+mat = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+result = nearestZero(mat)
+for row in result:
+    print(row)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+32.
+Algorithm:
+-Sort arr2 in ascending order.
+-Initialize a dynamic programming array dp of size n (where n is the length of arr1).
+-Initialize dp[0] to 0 (since no operations are needed for the first element).
+-For each index i from 1 to n-1:
+-Initialize dp[i] to infinity (a large value).
+-For each index j from 0 to i-1:
+-If arr1[j] < arr1[i], update dp[i] as the minimum of dp[i] and dp[j].
+-If arr1[j] >= arr1[i], find the smallest value k in arr2 such that k > arr1[j]. If such a value exists, update dp[i] as the minimum of dp[i] and dp[j] + 1.
+-If dp[n-1] remains infinity, return -1 (indicating that it’s impossible to make arr1 strictly increasing).
+-Otherwise, return dp[n-1].
+code:
+def minOperations(arr1, arr2):
+    arr2.sort()  
+    n = len(arr1)
+    dp = [float('inf')] * n
+    dp[0] = 0
+    for i in range(1, n):
+        for j in range(i):
+            if arr1[j] < arr1[i]:
+                dp[i] = min(dp[i], dp[j])
+            else:
+                k = bisect_left(arr2, arr1[j] + 1)
+                if k < len(arr2):
+                    dp[i] = min(dp[i], dp[j] + 1)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+33.
+Algorithm:
+-Initialize a variable repeats to 1 (since repeating a zero times is equivalent to an empty string).
+-Initialize a string current to the value of a.
+-While the length of current is less than or equal to the combined length of a and b:
+-If b is a substring of current, return the value of repeats.
+-Otherwise, concatenate a to current and increment repeats by 1.
+-If we exit the loop without finding a solution, return -1.
+code:
+def min_repeats(a, b):
+    repeats = 1
+    current = a
+    while len(current) <= len(a) + len(b):
+        if b in current:
+            return repeats
+        current += a
+        repeats += 1
+    return -1
+a = "abcd"
+b = "cdabcdab"
+result = min_repeats(a, b)
+print(result)  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+34.
+Algorithm:
+-Calculate the sum of the first N natural numbers using the formula: total_sum = N * (N + 1) / 2.
+-Compute the sum of all elements in the array (array_sum).
+-The missing number is total_sum - array_sum.
+code:
+def getMissingNo(arr, n):
+    N = n + 1
+    total_sum = N * (N + 1) // 2
+    array_sum = sum(arr)
+    return total_sum - array_sum
+arr = [1, 2, 3, 5]
+n = len(arr)
+missing_number = getMissingNo(arr, n)
+print(missing_number)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+35.
+Algorithm:
+-Initialize an empty matrix maxLocal of size (n - 2) x (n - 2) (where n is the size of the original grid).
+-Iterate over rows from 0 to n - 3 (inclusive):
+-For each row, iterate over columns from 0 to n - 3 (inclusive):
+-Initialize a variable max_val to negative infinity.
+-For each cell in the 3x3 submatrix centered around the current cell:
+-Update max_val with the maximum value encountered.
+-Set maxLocal[i][j] to max_val.
+-Return the maxLocal matrix.
+code:
+def largestLocal(grid):
+    n = len(grid)
+    maxLocal = [[0] * (n - 2) for _ in range(n - 2)]
+    for i in range(n - 2):
+        for j in range(n - 2):
+            # Initialize the maximum value for the current 3x3 submatrix
+            max_val = float('-inf')
+            for x in range(i, i + 3):
+                for y in range(j, j + 3):
+                    max_val = max(max_val, grid[x][y])
+            maxLocal[i][j] = max_val
+    return maxLocal
+grid1 = [
+    [9, 9, 8, 1],
+    [5, 6, 2, 6],
+    [8, 2, 6, 4],
+    [6, 2, 2, 2]
+]
+result1 = largestLocal(grid1)
+print(result1)  
+grid2 = [
+    [1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1],
+    [1, 1, 2, 1, 1],
+    [1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1]
+]
+result2 = largestLocal(grid2)
+print(result2)  
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 36
 algorithm:
 We’ll iterate through each word in the words array.
