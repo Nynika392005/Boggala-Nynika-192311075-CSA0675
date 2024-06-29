@@ -1,0 +1,176 @@
+1
+Algorithm:
+Check if the input list is empty: If the input list is empty, return an empty list.
+Check if the input list has only one element: If the input list has only one element, return the input list as is.
+Check if all elements in the input list are identical: If all elements in the input list are identical, return the input list as is.
+Check if all elements in the input list are negative: If all elements in the input list are negative, sort the input list in ascending order and return the sorted list.
+If none of the above conditions are met, return the input list as is.
+The key steps in the algorithm are:
+Checking the length of the input list to determine if it has one element or not.
+Using the set() function to check if all elements in the list are identical.
+Using a generator expression to check if all elements in the list are negative.
+Sorting the list in ascending order if all elements are negative.
+code:
+def create_list(input_list):
+    """
+    Performs various operations on the input list.
+    Args:
+        input_list (list): The input list.
+    Returns:
+        list: The modified list.
+    """
+    if not input_list:
+        return []
+    if len(input_list) == 1:
+        return input_list
+    if len(set(input_list)) == 1:
+        return input_list
+    if all(num < 0 for num in input_list):
+        return sorted(input_list)
+    return input_list
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2
+algorithm:
+Divide the input array into a sorted and an unsorted region.
+Find the minimum element from the unsorted region.
+Swap the minimum element with the first element of the unsorted region.
+Move the boundary of the sorted region one element to the right.
+Repeat steps 2-4 until the entire array is sorted.
+The algorithm can be summarized as follows:
+Iterate through the array.
+Find the minimum element in the unsorted part of the array.
+Swap the minimum element with the first element of the unsorted part.
+Repeat steps 1-3 until the entire array is sorted.
+code:
+def selection_sort(arr):
+    """
+    Sorts the input array in ascending order using the Selection Sort algorithm.
+    
+    Args:
+        arr (list): The input array to be sorted.
+        
+    Returns:
+        list: The sorted array.
+    """
+    n = len(arr)
+    
+    for i in range(n):
+        min_idx = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3
+algorithm:
+Initialize a flag swapped to keep track of whether any swaps occurred during the current pass.
+Iterate through the array from index 0 to n - i - 1, where n is the length of the array and i is the current pass number.
+Compare adjacent elements and swap them if they are in the wrong order.
+Set the swapped flag to True if any swaps occurred during the current pass.
+After each pass, check the value of the swapped flag:
+If swapped is False, it means the array is already sorted, so break out of the outer loop.
+If swapped is True, reset swapped to False and proceed to the next pass.
+Return the sorted array.
+code:
+def bubble_sort(arr):
+    """
+    Sorts the input array in ascending order using the Bubble Sort algorithm.
+    
+    Args:
+        arr (list): The input array to be sorted.
+    Returns:
+        list: The sorted array.
+    """
+    n = len(arr)
+    
+    for i in range(n):
+        swapped = False
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        if not swapped:
+            break
+    return arr
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4.
+algorithm:
+Initialize the length of the input array as n.
+Iterate through the array from index 0 to n - 1.
+Within the outer loop, initialize a flag swapped to False.
+Iterate through the array from index 0 to n - i - 1, where i is the current pass number.
+Compare adjacent elements and swap them if they are in the wrong order.
+Set the swapped flag to True if any swaps occurred during the current pass.
+After each pass, check the value of the swapped flag:
+If swapped is False, it means the array is already sorted, so break out of the outer loop.
+If swapped is True, reset swapped to False and proceed to the next pass.
+Return the sorted array.
+The key steps in the algorithm are:
+Introducing the swapped flag to keep track of whether any swaps occurred during the current pass.
+Checking the value of the swapped flag after each pass to determine if the array is already sorted and the loop can be terminated early.
+code:def bubble_sort(arr):
+    """
+    Sorts the input array in ascending order using the Bubble Sort algorithm.
+    
+    Args:
+        arr (list): The input array to be sorted.
+        
+    Returns:
+        list: The sorted array.
+    """
+    n = len(arr)
+    
+    for i in range(n):
+        swapped = False
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        if not swapped:
+            break
+    
+    return arr
+input_list1 = [64, 25, 12, 22, 11]
+expected_output1 = [11, 12, 22, 25, 64]
+print(f"Test Case 1: Input: {input_list1}, Expected Output: {expected_output1}, Actual Output: {bubble_sort(input_list1)}")
+input_list2 = [29, 10, 14, 37, 13]
+expected_output2 = [10, 13, 14, 29, 37]
+print(f"Test Case 2: Input: {input_list2}, Expected Output: {expected_output2}, Actual Output: {bubble_sort(input_list2)}")
+input_list3 = [3, 5, 2, 1, 4]
+expected_output3 = [1, 2, 3, 4, 5]
+print(f"Test Case 3: Input: {input_list3}, Expected Output: {expected_output3}, Actual Output: {bubble_sort(input_list3)}")
+input_list4 = [1, 2, 3, 4, 5]
+expected_output4 = [1, 2, 3, 4, 5]
+print(f"Test Case 4: Input: {input_list4}, Expected Output: {expected_output4}, Actual Output: {bubble_sort(input_list4)}")
+input_list5 = [5, 4, 3, 2, 1]
+expected_output5 = [1, 2, 3, 4, 5]
+print(f"Test Case 5: Input: {input_list5}, Expected Output: {expected_output5}, Actual Output: {bubble_sort(input_list5)}")
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+5.
+algorithm:
+Initialize a variable missing_count to keep track of the number of missing positive integers encountered so far.
+Iterate through the range of numbers from 1 to the last element in the input array arr.
+For each number i in the range, check if it is present in the arr array:
+If i is not present in arr, increment the missing_count by 1.
+If the missing_count is equal to k, return i as the kth missing positive integer.
+If the loop completes without finding the kth missing positive integer, it means that all the numbers up to the last element
+in arr are present, and the kth missing positive integer is the kth number after the last element in arr. In this case, return arr[-1] + k.
+code:
+def findKthPositive(arr, k):
+    """
+    Finds the kth positive integer that is missing from the given sorted array of positive integers.
+    Args:
+        arr (list): The sorted array of positive integers.
+        k (int): The value of k.
+    Returns:
+        int: The kth missing positive integer.
+    """
+    missing_count = 0
+    for i in range(1, arr[-1] + 1):
+        if i not in arr:
+            missing_count += 1
+            if missing_count == k:
+                return i
+    return arr[-1] + k
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
