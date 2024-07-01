@@ -22,6 +22,24 @@ graph = {
 coloring = graph_coloring(graph)
 print(coloring)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3.ROB HOUSE
+def rob_circular(nums):
+    if not nums:
+        return 0
+    if len(nums) == 1:
+        return nums[0]
+    def rob_linear(nums):
+        dp = [0] * (len(nums) + 1)
+        dp[1] = nums[0]
+        for i in range(2, len(nums) + 1):
+            dp[i] = max(dp[i - 1], dp[i - 2] + nums[i - 1])
+        return dp[-1]
+    case1 = rob_linear(nums[1:])
+    case2 = rob_linear(nums[:-1])
+    return max(case1, case2)
+print(rob_circular([2, 3, 2])) 
+print(rob_circular([1, 2, 3, 1])) 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 2.MAX AND MIN
 A=[1,2,3,4,5,6]
 print(max(A))
